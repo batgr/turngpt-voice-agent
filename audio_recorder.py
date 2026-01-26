@@ -5,7 +5,7 @@ import sounddevice as sd
 
 
 class AudioRecorder:
-    def __init__(self, fs=16000, duration=30):
+    def __init__(self, fs=16000, duration=30.0):
         self.fs = fs
         self.block_size = int(fs * duration)
         self.q = queue.Queue()
@@ -15,7 +15,9 @@ class AudioRecorder:
 
     def rec(self):
         print("recording...")
-        self.stream = sd.InputStream(blocksize=self.block_size, callback=self.callback)
+        self.stream = sd.InputStream(
+            blocksize=self.block_size, callback=self.callback, dtype="float32"
+        )
         self.stream.start()
 
     def callback(self, indata, frames, time, status):
