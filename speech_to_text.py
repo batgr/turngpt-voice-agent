@@ -1,6 +1,4 @@
-import torch
 import whisper
-from numpy import False_
 
 
 class SpeechToText:
