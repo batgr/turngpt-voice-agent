@@ -6,5 +6,5 @@ class SpeechToText:
         self.model = whisper.load_model(model)
 
     def to_text(self, wave):
-        r = self.model.transcribe(wave[0], fp16=False)
+        r = self.model.transcribe(wave.squeeze(), fp16=False, language="en")
         return r["text"]
