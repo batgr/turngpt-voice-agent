@@ -10,12 +10,12 @@ from speech_to_text import SpeechToText
 
 
 class VoiceActivityDetector:
-    def __init__(self, fs=16000) -> None:
+    def __init__(self, fs=16000, silence_limit=20, threshold=0.1) -> None:
         self.model = load_silero_vad()
         self.sampling_rate = fs
         self.silence_duration = 0
-        self.silence_limit = 20
-        self.threshold = 0.1
+        self.silence_limit = silence_limit
+        self.threshold = threshold
         self.buffer = []
 
     def is_speaking(self, wave):
