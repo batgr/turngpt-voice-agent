@@ -1,16 +1,24 @@
 [project]
 name = "multiparty-human-ai-agent-dialog"
 version = "0.1.0"
-description = "Add your description here"
+description = "Voice agent with TurnGPT end-of-turn detection"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
+    "datasets>=3.0",
     "kokoro>=0.9.4",
-    "numpy <=2.3.5",
+    "numpy",
     "ollama>=0.6.1",
-    "pyannote-audio>=4.0.3",
+    "openai-whisper>=2025.6.0",
+    "scikit-learn>=1.9.1",
+    "silero-vad>=6.0",
     "sounddevice>=0.5.5",
-    "soundfile>=0.13.1",
     "torch>=2.8.0",
     "transformers>=4.57.6",
 ]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

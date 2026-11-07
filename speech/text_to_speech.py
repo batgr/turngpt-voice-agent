@@ -1,40 +1,38 @@
 import threading
+import time
 
 import sounddevice as sd
 from kokoro import KPipeline
 
 
 class TextToSpeech:
-    def __init__(self, state) -> None:
-        self.pipeline = KPipeline(lang_code="b")
-        self.state = state
+    def __init__(self) -> None:
+        self.pipeline = KPipeline(lang_code="a", repo_id="hexgrad/Kokoro-82M")
         self.thread = None
         self.stop_event = threading.Event()
 
+    @property
+    def speaking(self):
+        return self.thread is not None and self.thread.is_alive()
+
     def to_speech(self, text):
         self.stop()
-
-        self.thread = threading.Thread(target=self.play, args=(text,), daemon=True)
+        self.stop_event = threading.Event()
+        self.thread = threading.Thread(target=self.play, args=(text, self.stop_event), daemon=True)
         self.thread.start()
 
-    def generate(self, text):
-        self.state.agent_speaking = True
-        generator = self.pipeline(text, voice="af_heart")
-        return generator
-
-    def play(self, text):
-        generator = self.generate(text)
-
-        for _, __, audio in generator:
-            if self.stop_event.is_set() or self.state.user_speaking:
-                sd.stop()
-                break
-            sd.play(audio)
-            sd.wait()
-        self.state.agent_speaking = False
+    def play(self, text, stop_event):
+        for _, __, audio in self.pipeline(text, voice="af_heart"):
+            if stop_event.is_set():
+                return
+            sd.play(audio.numpy(), 24000)
+            while sd.get_stream().active:
+                if stop_event.is_set():
+                    sd.stop()
+                    return
+                time.sleep(0.01)
 
     def stop(self):
         self.stop_event.set()
-        self.stop_event.clear()
-        sd.stop()
-        self.state.agent_speaking = False
+        if self.thread is not None:
+            self.thread.join()
