@@ -20,6 +20,8 @@ class AudioRecorder:
         self.stream.start()
 
     def callback(self, indata, frames, time, status):
+        if status:
+            print(status, flush=True)
         self.q.put(indata.copy())
 
     def chunks(self):

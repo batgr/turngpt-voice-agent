@@ -12,7 +12,8 @@ After a short pause, Whisper transcribes the turn and [TurnGPT](https://arxiv.or
 uv sync
 ollama pull llama3.2:3b-instruct-q4_K_M
 uv run python -m turn.train_turn_gpt    # 3,000 steps; no English TurnGPT checkpoint is published
-uv run python main.py                   # use a headset
+uv run python main.py                   # with a headset
+uv run python main.py --speakers        # on loudspeakers: no interruption
 uv run pytest
 ```
 
@@ -43,6 +44,10 @@ The turn rules were run end to end on synthetic speech with the real VAD, Whispe
 
 ## Limits
 
-- Not yet tested with a real microphone and loudspeakers.
-- Switchboard is casual conversation, so complete service requests can score low (P = 0.05 on the booking above): those turns wait for the long pause.
+- Checked by ear on one real voice, without measurements: the results above are on synthetic speech.
+- Switchboard is casual conversation, so complete service requests can score low (P = 0.04 on the booking above): those turns wait for the long pause.
 - The audio queues up while Whisper and the LLM run, and the history keeps the agent's whole reply even when it was cut off.
+
+## Data and license
+
+The code is under the [MIT License](LICENSE). The TurnGPT weights are not published and not covered by it: `turn/train_turn_gpt.py` trains them from [`amrit-kumar-jain/switchboard`](https://huggingface.co/datasets/amrit-kumar-jain/switchboard), a copy of Switchboard transcripts with no stated license. The original corpus is distributed by the [LDC](https://catalog.ldc.upenn.edu/LDC97S62) under its own agreement, so check your rights before using the data. DialoGPT, Whisper, Silero VAD, Kokoro and the LLM keep their own licenses.
