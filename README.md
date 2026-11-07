@@ -6,16 +6,28 @@ A local voice agent that decides when the user has finished speaking from their 
 microphone -> Silero VAD -> Whisper -> TurnGPT -> LLM (Ollama) -> Kokoro
 ```
 
-After a short pause, Whisper transcribes the turn and [TurnGPT](https://arxiv.org/abs/2010.10874) gives the probability of a turn shift after the last word. A likely end answers at once; otherwise the agent waits for a longer pause or more speech. Sustained speech cuts the agent off.
+**Use a headset.** On loudspeakers the agent hears itself and cuts itself off.
 
 ```bash
 uv sync
 ollama pull llama3.2:3b-instruct-q4_K_M
 uv run python -m turn.train_turn_gpt    # 3,000 steps; no English TurnGPT checkpoint is published
 uv run python main.py                   # with a headset
-uv run python main.py --speakers        # on loudspeakers: no interruption
+uv run python main.py --speakers        # no headset: the microphone is ignored while the agent talks, so it cannot be interrupted
 uv run pytest
 ```
+
+## How it works
+
+1. **Listening.** The microphone gives 32 ms chunks of 16 kHz audio. Silero VAD marks each chunk as speech or not, and the speech is buffered.
+2. **Short pause, 0.25 s.** Speech under 0.2 s is dropped as noise. Otherwise Whisper transcribes the whole buffer, and [TurnGPT](https://arxiv.org/abs/2010.10874) reads the dialog so far and gives the probability of a turn shift after the last word.
+3. **Decision.** If that probability is at least 0.3, the agent answers at once. If not, it keeps listening: new speech extends the same turn, and a pause of 1.2 s ends it anyway.
+4. **Answer.** The LLM (Ollama) replies from the whole dialog, and Kokoro speaks the reply sentence by sentence.
+5. **Interruption.** 0.3 s of continuous speech while the agent talks stops it, and the new speech becomes the next turn. Shorter speech is dropped.
+
+So the words decide early and silence decides in the end: a finished sentence gets a quick answer, and a pause in the middle of a sentence is not cut off.
+
+Each step is logged with its time: `user:`, `agent:`, `P(turn shift)`, `speech started`, `agent interrupted` and the microphone level.
 
 | Path | Role |
 |---|---|
