@@ -1538,45 +1538,6 @@ wheels = [
 ]
 
 [[package]]
-name = "multiparty-human-ai-agent-dialog"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "datasets" },
-    { name = "kokoro" },
-    { name = "numpy" },
-    { name = "ollama" },
-    { name = "openai-whisper" },
-    { name = "scikit-learn" },
-    { name = "silero-vad" },
-    { name = "sounddevice" },
-    { name = "torch" },
-    { name = "transformers" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "datasets", specifier = ">=3.0" },
-    { name = "kokoro", specifier = ">=0.9.4" },
-    { name = "numpy" },
-    { name = "ollama", specifier = ">=0.6.1" },
-    { name = "openai-whisper", specifier = ">=2025.6.0" },
-    { name = "scikit-learn", specifier = ">=1.9.1" },
-    { name = "silero-vad", specifier = ">=6.0" },
-    { name = "sounddevice", specifier = ">=0.5.5" },
-    { name = "torch", specifier = ">=2.8.0" },
-    { name = "transformers", specifier = ">=4.57.6" },
-]
-
-[package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=8" }]
-
-[[package]]
 name = "multiprocess"
 version = "0.70.19"
 source = { registry = "https://pypi.org/simple" }
@@ -3435,6 +3396,45 @@ sdist = { url = "https://files.pythonhosted.org/packages/ee/9f/c5201d42a484c061e
 wheels = [
     { url = "https://files.pythonhosted.org/packages/51/e9/3a7820be2bb0fe53b6bc9c3be26d3d1158004e4c3ab953aa6840b955b1e9/truststore-0.10.5-py3-none-any.whl", hash = "sha256:9aaaedaefaf06d8b206278cf8b5012bc897f485a874503501e12d776df78951c", size = 19017, upload-time = "2026-10-12T22:27:30.377Z" },
 ]
+
+[[package]]
+name = "turngpt-voice-agent"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "datasets" },
+    { name = "kokoro" },
+    { name = "numpy" },
+    { name = "ollama" },
+    { name = "openai-whisper" },
+    { name = "scikit-learn" },
+    { name = "silero-vad" },
+    { name = "sounddevice" },
+    { name = "torch" },
+    { name = "transformers" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "datasets", specifier = ">=3.0" },
+    { name = "kokoro", specifier = ">=0.9.4" },
+    { name = "numpy" },
+    { name = "ollama", specifier = ">=0.6.1" },
+    { name = "openai-whisper", specifier = ">=2025.6.0" },
+    { name = "scikit-learn", specifier = ">=1.9.1" },
+    { name = "silero-vad", specifier = ">=6.0" },
+    { name = "sounddevice", specifier = ">=0.5.5" },
+    { name = "torch", specifier = ">=2.8.0" },
+    { name = "transformers", specifier = ">=4.57.6" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=8" }]
 
 [[package]]
 name = "typer"

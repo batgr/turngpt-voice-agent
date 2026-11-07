@@ -1,4 +1,4 @@
-# Multi-party AI dialog
+# TurnGPT voice agent
 
 A local voice agent that decides when the user has finished speaking from their words, not only from silence.
 
