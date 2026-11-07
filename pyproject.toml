@@ -1,7 +1,7 @@
 [project]
 name = "multiparty-human-ai-agent-dialog"
 version = "0.1.0"
-description = "Voice agent with TurnGPT end-of-turn detection"
+description = "Local voice agent that decides when you have finished speaking from your words, not only from silence: TurnGPT, Whisper, Ollama and Kokoro"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
